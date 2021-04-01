@@ -31,6 +31,9 @@ class _ExampleHomePageState extends State<ExampleHomePage> with TickerProviderSt
     "Hello5",
     "Hello6",
     "Hello7",
+    "Hello7",
+    "Hello7",
+    "Hello7",
   ];
 
   @override
