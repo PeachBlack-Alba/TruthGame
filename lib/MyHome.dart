@@ -23,7 +23,7 @@ class ExampleHomePage extends StatefulWidget {
 }
 
 class _ExampleHomePageState extends State<ExampleHomePage> with TickerProviderStateMixin {
-  List<String> welcomeImages = [
+  List<String> truths = [
     "Hello",
     "Hello2",
     "Hello3",
@@ -39,9 +39,18 @@ class _ExampleHomePageState extends State<ExampleHomePage> with TickerProviderSt
   @override
   Widget build(BuildContext context) {
     CardController controller;
+    void _reset() {
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          transitionDuration: Duration.zero,
+          pageBuilder: (_, __, ___) => MyHome(),
+        ),
+      );
+    }
 
     return Scaffold(
-      backgroundColor: Colors.black45,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -50,31 +59,58 @@ class _ExampleHomePageState extends State<ExampleHomePage> with TickerProviderSt
           style: TextStyle(color: Colors.redAccent),
         ),
       ),
-      body: Container(
-          height: MediaQuery.of(context).size.height * 0.7,
-          child: TinderSwapCard(
-            orientation: AmassOrientation.BOTTOM,
-            totalNum: 6,
-            stackNum: 4,
-            swipeEdge: 4.0,
-            maxWidth: MediaQuery.of(context).size.width * 0.9,
-            maxHeight: MediaQuery.of(context).size.width * 0.9,
-            minWidth: MediaQuery.of(context).size.width * 0.8,
-            minHeight: MediaQuery.of(context).size.width * 0.8,
-            cardBuilder: (context, index) => Card(
-              child: Center(
-                  child: Text(
-                '${welcomeImages[index]}',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              )),
+      body: Column(
+        // mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: TinderSwapCard(
+              orientation: AmassOrientation.BOTTOM,
+              totalNum: 6,
+              stackNum: 4,
+              swipeEdge: 4.0,
+              maxWidth: MediaQuery.of(context).size.width * 0.9,
+              maxHeight: MediaQuery.of(context).size.width * 0.9,
+              minWidth: MediaQuery.of(context).size.width * 0.8,
+              minHeight: MediaQuery.of(context).size.width * 0.8,
+              cardBuilder: (context, index) => Card(
+                child: Center(
+                    child: Text(
+                  '${truths[index]}',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                )),
+              ),
+              cardController: controller = CardController(),
+              swipeUpdateCallback: (DragUpdateDetails details, Alignment align) {
+                if (align.x < 0) {
+                } else if (align.x > 0) {
+                  return {};
+                }
+              },
+              swipeCompleteCallback: (CardSwipeOrientation orientaion, int index) {
+                GestureDetector(
+                  child: Text('try me again'),
+                  onTap: () {
+                    truths.clear();
+                    setState(() {});
+                  },
+                );
+              },
             ),
-            cardController: controller = CardController(),
-            swipeUpdateCallback: (DragUpdateDetails details, Alignment align) {
-              if (align.x < 0) {
-              } else if (align.x > 0) {}
-            },
-            swipeCompleteCallback: (CardSwipeOrientation orientaion, int index) {},
-          )),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: FlatButton(
+              onPressed: _reset,
+              child: Text(
+                'RESET',
+                style: TextStyle(color: Colors.redAccent),
+              ),
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: CurvedNavigationBar(
         color: Colors.white,
         backgroundColor: Colors.transparent,
