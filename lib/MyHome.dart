@@ -4,6 +4,7 @@ import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:truthGame/utils/Custom_clipper.dart';
 
 class MyHome extends StatelessWidget {
   // This widget is the root of your application.
@@ -39,6 +40,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> with TickerProviderSt
   @override
   Widget build(BuildContext context) {
     CardController controller;
+    // Reset the list when finish
     void _reset() {
       Navigator.pushReplacement(
         context,
@@ -51,12 +53,29 @@ class _ExampleHomePageState extends State<ExampleHomePage> with TickerProviderSt
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        title: Text(
-          'The truth game',
-          style: TextStyle(color: Colors.redAccent),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80),
+        child: AppBar(
+          title: Text(
+            'Discord family is the best, innit!',
+            style: TextStyle(color: Colors.redAccent),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          flexibleSpace: ClipPath(
+            clipper: MyCustomClipperForAppBar(),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF696D77), Color(0xFF292C36)],
+                  begin: Alignment.bottomRight,
+                  end: Alignment.topLeft,
+                  tileMode: TileMode.clamp,
+                ),
+              ),
+            ),
+          ),
         ),
       ),
       body: Column(
